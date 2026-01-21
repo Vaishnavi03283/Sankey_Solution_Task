@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do Task Manager</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    
+    <!-- joke part -->
+    <div id="joke" class="joke-box">
+       <p id="jokeText"> Loading Jokes...</p>
+    </div>
+
+    <main class="container">
+
+        <!-- main heading  -->
+         <h1>My Task Manager</h1>
+
+         <!-- task input -->
+          <div class="task-input">
+            <input
+                type="text" 
+                id="taskInput"
+                placeholder="Enter Your Task Here..."
+            >
+            <button id="addTaskBtn">Add Task</button>
+          </div>
+
+          <!-- task Progress -->
+           <div class="task-progress">
+                <div>
+                    <span>Total Tasks :  </span>
+                    <strong id="totalTasks">0</strong>
+                </div>
+                <div>
+                    <span>Completed Tasks :  </span>
+                    <strong id="completedTasks">0</strong>
+                </div>
+
+                <div>
+                    <span>Pending : </span>
+                    <strong id="pendingTasks">0</strong>
+                </div>
+
+            </div>
+            <div class="progress-wrapper">
+                <div class="progress-bar">
+                    <div id="progressFill"></div>
+                </div>
+                <span id="progressPercent"> 0% Completed : </span>
+            </div>
+
+           <!-- Task List -->
+            <ul id="taskList"></ul>
+
+    </main>
+
+    <script src="js/script.js"></script>
+
+</body>
+</html>
