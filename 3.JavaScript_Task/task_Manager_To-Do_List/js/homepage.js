@@ -11,8 +11,8 @@ const progressFill = document.getElementById("progressFill");
 const progressPercent = document.getElementById("progressPercent");
 
 const jokeText = document.getElementById("jokeText");
-// const jokeBtn = document.getElementById("jokeBtn");
-// const jokeBox = document.getElementById("joke");
+const emptyMessage = document.getElementById("emptyMessage")
+
 
 const STORAGE_KEY = "My_Tasks";
 
@@ -23,26 +23,20 @@ document.addEventListener("DOMContentLoaded", () => {
     updatedTaskProgress();
     fetchRandomJoke();
 });
+
 addTaskBtn.addEventListener("click", addTask);
 taskList.addEventListener("click", handleTaskActions);
-// document.addEventListener("DOMContentLoaded",fetchRandomJoke())
-jokeBtn.addEventListener("click", fetchRandomJoke);
-
 
 
 // API --> Jokes
 async function fetchRandomJoke() {
     console.log("api Fetching --> ");
-    
-
     try {
         jokeText.textContent = "Loading Joke....";
-
         const response = await fetch("https://api.chucknorris.io/jokes/random")
         
         if (!response.ok) {
-            throw new Error(`HTTP  error! Status: ${response.status}`);
-            
+            throw new Error(`HTTP  error! Status: ${response.status}`); 
         }
 
         const data = await response.json();
@@ -54,38 +48,27 @@ async function fetchRandomJoke() {
     }
 }
 
-// document.addEventListener("DOMContentLoaded", () => {
-//     fetchRandomJoke();
-// })
-
 
 // Add Tasks -->> 
 function addTask(){
     console.log("Tasks Added --> ");
     
     const taskText = taskInput.value.trim();
-
     if(taskText === ""){
         alert("Please Enter a valid Task.");
         return;
     }
-
     const task = {
         id: Date.now(),
         text: taskText,
         completed: false
     };
-
     tasks.push(task);
     console.log("task list is : ", task);
     
-
     saveTasksToLocalStorage();
-
     renderTask(task);
-
     updatedTaskProgress();
-
     taskInput.value = "";
 }
 
@@ -111,11 +94,17 @@ function renderTask(task){
         </div>
 
         <div class="task-actions">
-            <button class="complete-btn">
-                ${task.completed ? "Undo" : "Complete"}
+            <button class="task-checkbox complete-btn ${task.completed ? "checked" : ""}">
+               <i class="fa-solid fa-check"></i>
             </button>
-            <button class="edit-btn"> Edit </button>
-            <button class="delete-btn"> Delete </button>
+
+            <button class="edit-btn icon-btn edit-icon"> 
+                <i class="fa-solid fa-pen"></i>
+            </button>
+
+            <button class="delete-btn icon-btn delete-icon"> 
+                <i class="fa-solid fa-trash"></i>
+            </button>
         </div>
     `;   
     taskList.appendChild(li);
@@ -126,22 +115,19 @@ function handleTaskActions(event){
 
     const li = event.target.closest(".task-item");
     if(!li) return;
-
     const taskId = Number(li.dataset.id);
     
-    // completed/Undo
-    if (event.target.classList.contains("complete-btn")) {
+    // completed/Undo -->
+    if (event.target.closest(".complete-btn")) {
         toggleTaskCompletion(taskId, li);
     }
-
-    // delete task
-    if(event.target.classList.contains("delete-btn")){
-        deleteTask(taskId, li);
-    }
-
-    // edit task
-    if(event.target.classList.contains("edit-btn")){
+    // edit task -->
+    if(event.target.closest(".edit-btn")){
         editTask(taskId, li);
+    }
+    // delete task -->
+    if(event.target.closest(".delete-btn")){
+        deleteTask(taskId, li);
     }
 }
 
@@ -151,8 +137,7 @@ function toggleTaskCompletion(taskId, taskElement) {
 
     // toggle state
     task.completed = !task.completed;
-
-    // status badge
+    // status 
     const statusSpan = taskElement.querySelector(".task-status");
 
     if (task.completed) {
@@ -168,25 +153,17 @@ function toggleTaskCompletion(taskId, taskElement) {
     }
 
     // button text
-    const btn = taskElement.querySelector(".complete-btn");
-    btn.textContent = task.completed ? "Undo" : "Complete";
-
+    const checkbox = taskElement.querySelector(".task-checkbox");
+    if (task.completed) {
+        checkbox.classList.add("checked");
+    } else {
+        checkbox.classList.remove("checked");
+    }
     saveTasksToLocalStorage();
     updatedTaskProgress();
 }
 
-
-// delete task 
-function deleteTask(taskId, taskElement){
-    console.log("deleteTask called --> ", taskId , taskElement);
-
-    tasks = tasks.filter(task => task.id !== taskId);
-    taskElement.remove();
-
-    saveTasksToLocalStorage();
-    updatedTaskProgress();
-}
-
+// edit task
 function editTask(taskId, taskElement){
     console.log("editTask called --> ", taskId , taskElement);
 
@@ -208,6 +185,17 @@ function editTask(taskId, taskElement){
     saveTasksToLocalStorage();
 }
 
+// delete task 
+function deleteTask(taskId, taskElement){
+    console.log("deleteTask called --> ", taskId , taskElement);
+
+    tasks = tasks.filter(task => task.id !== taskId);
+    taskElement.remove();
+
+    saveTasksToLocalStorage();
+    updatedTaskProgress();
+}
+
 // update task progress
 function updatedTaskProgress(){
     console.log("updatedTaskProgress called --> ");
@@ -221,10 +209,17 @@ function updatedTaskProgress(){
     pendingTasksSpan.textContent = pending;
 
     const percentage = total === 0 ? 0 : Math.round((completed/total) * 100);
+
     
     if(progressFill && progressPercent){
         progressFill.style.width = percentage + "%";
         progressPercent.textContent = `${percentage}% Completed`;
+    }
+
+    if (total == 0) {
+        emptyMessage.style.display = "block";
+    }else{
+        emptyMessage.style.display = "none";
     }
 }
 

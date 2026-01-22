@@ -3,15 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>To-Do Task Manager</title>
-    <link rel="stylesheet" href="css/style.css">
+    <title>My Task Manager</title>
+    <link rel="stylesheet" href="css/homepage.css">
+    <link rel="stylesheet"
+     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+
 </head>
 <body>
-    
-    <!-- joke part -->
-    <div id="joke" class="joke-box">
-       <p id="jokeText"> Loading Jokes...</p>
-    </div>
+
+    <section class="joke-box">
+        <div class="joke-header">
+            <i class="fa-solid fa-face-laugh-beam"></i>
+            <h3> Daily Chuck Norris Joke</h3>
+        </div>
+
+        <p id="jokeText" class="joke-text">
+            Loading a fun joke for you...
+        </p>
+    </section>
 
     <main class="container">
 
@@ -25,26 +35,30 @@
                 id="taskInput"
                 placeholder="Enter Your Task Here..."
             >
-            <button id="addTaskBtn">Add Task</button>
+            <button id="addTaskBtn">
+                <span class="plus-icon">+</span>
+                Add Task
+            </button>
           </div>
 
-          <!-- task Progress -->
-           <div class="task-progress">
-                <div>
-                    <span>Total Tasks :  </span>
+            <section class="task-progress">
+                <div class="progress-card">
+                    <span class="label">Total</span>
                     <strong id="totalTasks">0</strong>
                 </div>
-                <div>
-                    <span>Completed Tasks :  </span>
+
+                <div class="progress-card completed">
+                    <span class="label">Completed</span>
                     <strong id="completedTasks">0</strong>
                 </div>
 
-                <div>
-                    <span>Pending : </span>
+                <div class="progress-card pending">
+                    <span class="label">Pending</span>
                     <strong id="pendingTasks">0</strong>
                 </div>
+            </section>
 
-            </div>
+            
             <div class="progress-wrapper">
                 <div class="progress-bar">
                     <div id="progressFill"></div>
@@ -55,9 +69,13 @@
            <!-- Task List -->
             <ul id="taskList"></ul>
 
+            <p id="emptyMessage" class="empty-message">
+                No tasks added yet. Start by adding your first task 
+            </p>
+
     </main>
 
-    <script src="js/script.js"></script>
+    <script src="js/homepage.js"></script>
 
 </body>
 </html>
